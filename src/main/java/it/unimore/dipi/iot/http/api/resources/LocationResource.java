@@ -4,8 +4,11 @@ import com.codahale.metrics.annotation.Timed;
 import io.dropwizard.jersey.errors.ErrorMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import it.unimore.dipi.iot.http.api.dto.DeviceUpdateRequest;
 import it.unimore.dipi.iot.http.api.dto.LocationCreationRequest;
+import it.unimore.dipi.iot.http.api.dto.LocationUpdateRequest;
 import it.unimore.dipi.iot.http.api.exception.IoTInventoryDataManagerConflict;
+import it.unimore.dipi.iot.http.api.model.DeviceDescriptor;
 import it.unimore.dipi.iot.http.api.model.LocationDescriptor;
 import it.unimore.dipi.iot.http.api.services.AppConfig;
 import org.slf4j.Logger;
@@ -126,6 +129,71 @@ public class LocationResource {
 
         } catch (IoTInventoryDataManagerConflict e){
             return Response.status(Response.Status.CONFLICT).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.CONFLICT.getStatusCode(),"Location with the same name already available !")).build();
+        } catch (Exception e){
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),"Internal Server Error !")).build();
+        }
+    }
+
+    @PUT
+    @Path("/{location_id}")
+    @Timed
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @ApiOperation(value="Update an existing device")
+    public Response updateDevice(@Context ContainerRequestContext req,
+                                 @Context UriInfo uriInfo,
+                                 @PathParam("location_id") String locationId,
+                                 LocationUpdateRequest locationUpdateRequest) {
+
+        try {
+
+            logger.info("Incoming Location ({}) Update Request: {}", locationId, locationUpdateRequest);
+
+            //Check if the request is valid
+            if(locationUpdateRequest == null || !locationUpdateRequest.getId().equals(locationId))
+                return Response.status(Response.Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.BAD_REQUEST.getStatusCode(),"Invalid request ! Check Location Id")).build();
+
+            //Check if the device is available and correctly registered otherwise a 404 response will be sent to the client
+            if(!this.conf.getInventoryDataManager().getLocation(locationId).isPresent())
+                return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),"Location not found !")).build();
+
+            LocationDescriptor locationDescriptor = (LocationDescriptor) locationUpdateRequest;
+            this.conf.getInventoryDataManager().updateLocation(locationDescriptor);
+
+            return Response.noContent().build();
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),"Internal Server Error !")).build();
+        }
+    }
+
+    @DELETE
+    @Path("/{location_id}")
+    @Timed
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value="Delete a Single Location")
+    public Response deleteDevice(@Context ContainerRequestContext req,
+                                 @PathParam("location_id") String locationId) {
+
+        try {
+
+            logger.info("Deleting Location with id: {}", locationId);
+
+            //Check the request
+            if(locationId == null)
+                return Response.status(Response.Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.BAD_REQUEST.getStatusCode(),"Invalid Location Id Provided !")).build();
+
+            //Check if the device is available or not
+            if(!this.conf.getInventoryDataManager().getLocation(locationId).isPresent())
+                return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),"Location Not Found !")).build();
+
+            //Delete the location
+            this.conf.getInventoryDataManager().deleteLocation(locationId);
+
+            return Response.noContent().build();
+
         } catch (Exception e){
             e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),"Internal Server Error !")).build();

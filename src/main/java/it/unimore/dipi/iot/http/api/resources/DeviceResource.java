@@ -5,6 +5,7 @@ import io.dropwizard.jersey.errors.ErrorMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import it.unimore.dipi.iot.http.api.dto.DeviceCreationRequest;
+import it.unimore.dipi.iot.http.api.dto.DeviceUpdateRequest;
 import it.unimore.dipi.iot.http.api.exception.IoTInventoryDataManagerConflict;
 import it.unimore.dipi.iot.http.api.exception.IoTInventoryDataManagerException;
 import it.unimore.dipi.iot.http.api.model.DeviceDescriptor;
@@ -103,7 +104,7 @@ public class DeviceResource {
     @Timed
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @ApiOperation(value="Create a new Location")
+    @ApiOperation(value="Create a new Device")
     public Response createDevice(@Context ContainerRequestContext req,
                                    @Context UriInfo uriInfo,
                                    DeviceCreationRequest deviceCreationRequest) {
@@ -123,6 +124,72 @@ public class DeviceResource {
 
         } catch (IoTInventoryDataManagerConflict e){
             return Response.status(Response.Status.CONFLICT).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.CONFLICT.getStatusCode(),"Location with the same name already available !")).build();
+        } catch (Exception e){
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),"Internal Server Error !")).build();
+        }
+    }
+
+    @PUT
+    @Path("/{device_id}")
+    @Timed
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @ApiOperation(value="Update an existing device")
+    public Response updateDevice(@Context ContainerRequestContext req,
+                                 @Context UriInfo uriInfo,
+                                 @PathParam("device_id") String deviceId,
+                                 DeviceUpdateRequest deviceUpdateRequest) {
+
+        try {
+
+            logger.info("Incoming Device ({}) Update Request: {}", deviceId, deviceUpdateRequest);
+
+            //Check if the request is valid
+            if(deviceUpdateRequest == null || !deviceUpdateRequest.getUuid().equals(deviceId))
+                return Response.status(Response.Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.BAD_REQUEST.getStatusCode(),"Invalid request ! Check Device Id")).build();
+
+            //Check if the device is available and correctly registered otherwise a 404 response will be sent to the client
+            if(!this.conf.getInventoryDataManager().getDevice(deviceId).isPresent())
+                return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),"Device not found !")).build();
+
+            DeviceDescriptor deviceDescriptor = (DeviceDescriptor)deviceUpdateRequest;
+            this.conf.getInventoryDataManager().updateDevice(deviceDescriptor);
+
+            return Response.noContent().build();
+
+        } catch (Exception e){
+            e.printStackTrace();
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),"Internal Server Error !")).build();
+        }
+    }
+
+    @DELETE
+    @Path("/{device_id}")
+    @Timed
+    @Produces(MediaType.APPLICATION_JSON)
+    @ApiOperation(value="Delete a Single Device")
+    public Response deleteDevice(@Context ContainerRequestContext req,
+                              @PathParam("device_id") String deviceId) {
+
+        try {
+
+            logger.info("Deleting Device with id: {}", deviceId);
+
+            //Check the request
+            if(deviceId == null)
+                return Response.status(Response.Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.BAD_REQUEST.getStatusCode(),"Invalid Device Id Provided !")).build();
+
+            //Check if the device is available or not
+            Optional<DeviceDescriptor> deviceDescriptor = this.conf.getInventoryDataManager().getDevice(deviceId);
+            if(!deviceDescriptor.isPresent())
+                return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),"Device Not Found !")).build();
+
+            //Delete the device
+            this.conf.getInventoryDataManager().deleteDevice(deviceId);
+
+            return Response.noContent().build();
+
         } catch (Exception e){
             e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),"Internal Server Error !")).build();

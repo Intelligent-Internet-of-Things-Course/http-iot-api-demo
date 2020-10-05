@@ -48,7 +48,7 @@ public class DefaultIotInventoryDataManger implements IIoInventoryDataManager{
 
     @Override
     public Optional<LocationDescriptor> getLocation(String locationId) throws IoTInventoryDataManagerException {
-        return Optional.of(this.locationMap.get(locationId));
+        return Optional.ofNullable(this.locationMap.get(locationId));
     }
 
     @Override
@@ -111,7 +111,7 @@ public class DefaultIotInventoryDataManger implements IIoInventoryDataManager{
 
     @Override
     public Optional<DeviceDescriptor> getDevice(String deviceId) throws IoTInventoryDataManagerException {
-        return Optional.of(this.deviceMap.get(deviceId));
+        return Optional.ofNullable(this.deviceMap.get(deviceId));
     }
 
     @Override
