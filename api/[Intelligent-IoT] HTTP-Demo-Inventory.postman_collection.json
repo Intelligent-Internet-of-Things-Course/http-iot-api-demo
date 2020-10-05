@@ -1,0 +1,384 @@
+{
+	"info": {
+		"_postman_id": "4ae7cbf7-da33-432f-8733-8eea9f125af4",
+		"name": "[Intelligent-IoT] HTTP-Demo-Inventory",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Locations",
+			"item": [
+				{
+					"name": "Get All Locations",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:7070/api/iot/inventory/location",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "7070",
+							"path": [
+								"api",
+								"iot",
+								"inventory",
+								"location"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Location",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": null,\n    \"latitude\": 45.160217,\n    \"longitude\": 10.7877205,\n    \"city\": \"Mantova\",\n    \"address\": \"Via Angelo Scarsellini, 2, 46100\",\n    \"country\": \"Italy\",\n    \"name\": \"Internet of Things - Laboratory\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:7070/api/iot/inventory/location",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "7070",
+							"path": [
+								"api",
+								"iot",
+								"inventory",
+								"location"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Location with Filter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:7070/api/iot/inventory/location?city=Mantova&country=Italy",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "7070",
+							"path": [
+								"api",
+								"iot",
+								"inventory",
+								"location"
+							],
+							"query": [
+								{
+									"key": "city",
+									"value": "Mantova"
+								},
+								{
+									"key": "country",
+									"value": "Italy"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Location By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:7070/api/iot/inventory/location/000001",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "7070",
+							"path": [
+								"api",
+								"iot",
+								"inventory",
+								"location",
+								"000001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Location By Id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": \"000001\",\n    \"latitude\": 45.160217,\n    \"longitude\": 10.7877205,\n    \"city\": \"Mantova\",\n    \"address\": \"Via Angelo Scarsellini, 2, 46100\",\n    \"country\": \"Italy\",\n    \"name\": \"Foundation Universita' di Mantova (FUM)\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:7070/api/iot/inventory/location/000001",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "7070",
+							"path": [
+								"api",
+								"iot",
+								"inventory",
+								"location",
+								"000001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Location By Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:7070/api/iot/inventory/location/000001",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "7070",
+							"path": [
+								"api",
+								"iot",
+								"inventory",
+								"location",
+								"000001"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Devices",
+			"item": [
+				{
+					"name": "Get All Devices",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:7070/api/iot/inventory/device",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "7070",
+							"path": [
+								"api",
+								"iot",
+								"inventory",
+								"device"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create Device",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"uuid\": \"device00002\",\n    \"name\": \"Demo Temperature Sensor 2\",\n    \"locationId\": \"000001\",\n    \"type\": \"dev:dummy:temperature\",\n    \"attributes\": {\n        \"min_value\": -200,\n        \"unit\": \"C\",\n        \"software_version\": \"0.0.1\",\n        \"battery\": false,\n        \"manufacturer\": \"ACME Corporation\",\n        \"max_value\": 200\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:7070/api/iot/inventory/device",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "7070",
+							"path": [
+								"api",
+								"iot",
+								"inventory",
+								"device"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Devices with Filter",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:7070/api/iot/inventory/device?type=dev:dummy:temperature&locationId=000001",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "7070",
+							"path": [
+								"api",
+								"iot",
+								"inventory",
+								"device"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "dev:dummy:temperature"
+								},
+								{
+									"key": "locationId",
+									"value": "000001"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Device by Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:7070/api/iot/inventory/device/device00001",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "7070",
+							"path": [
+								"api",
+								"iot",
+								"inventory",
+								"device",
+								"device00001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Device by Id",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://127.0.0.1:7070/api/iot/inventory/device/device00001",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "7070",
+							"path": [
+								"api",
+								"iot",
+								"inventory",
+								"device",
+								"device00001"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Device by Id",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"uuid\": \"device00001\",\n    \"name\": \"Demo Temperature Sensor - 1\",\n    \"locationId\": \"000001\",\n    \"type\": \"dev:dummy:temperature\",\n    \"attributes\": {\n        \"min_value\": -200,\n        \"unit\": \"C\",\n        \"software_version\": \"0.0.1\",\n        \"battery\": false,\n        \"manufacturer\": \"ACME Corporation\",\n        \"max_value\": 200\n    }\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://127.0.0.1:7070/api/iot/inventory/device/device00001",
+							"protocol": "http",
+							"host": [
+								"127",
+								"0",
+								"0",
+								"1"
+							],
+							"port": "7070",
+							"path": [
+								"api",
+								"iot",
+								"inventory",
+								"device",
+								"device00001"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"protocolProfileBehavior": {}
+}
