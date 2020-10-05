@@ -8,6 +8,9 @@ are also exposed using swagger through the following local link: http://127.0.0.
 
 APIs are exposed through a configurable port (7070) and accessible locally at: http://127.0.0.1:7070/api/iot/ 
 
+The project includes a set of demo client classes to show how to interact with the designed APIs using Java and 
+the Apache HTTP Client Library (https://hc.apache.org/httpcomponents-client-ga/). Additional example can be found at: https://mkyong.com/java/apache-httpclient-examples/
+
 ## Modeled REST Resources
 
 The IoT Inventory resources currently modeled are:

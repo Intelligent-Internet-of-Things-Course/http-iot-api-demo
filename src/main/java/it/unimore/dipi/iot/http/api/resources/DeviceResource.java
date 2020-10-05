@@ -27,7 +27,6 @@ import java.util.Optional;
 @Api("IoT Inventory Device Endpoint")
 public class DeviceResource {
 
-
     final protected Logger logger = LoggerFactory.getLogger(DeviceResource.class);
 
     @SuppressWarnings("serial")
