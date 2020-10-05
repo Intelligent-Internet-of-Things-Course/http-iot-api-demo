@@ -5,18 +5,14 @@ import com.fasterxml.jackson.databind.type.CollectionType;
 import it.unimore.dipi.iot.http.api.model.LocationDescriptor;
 import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
-import org.apache.http.NameValuePair;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.utils.URIBuilder;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,6 +34,46 @@ public class GetLocationsProcess {
         this.httpClient = HttpClients.custom()
                 .build();
     }
+
+    public void getLocation(String locationId){
+
+        try{
+
+            String targetUrl = String.format("%slocation/%s", this.baseUrl, locationId);
+
+            //Create the HTTP GET Request
+            HttpGet getLocationListRequest = new HttpGet(targetUrl);
+
+            //Add Request Header
+            getLocationListRequest.addHeader(HttpHeaders.USER_AGENT, "DemoIoTInventoryClient-0.0.1");
+
+            //Execute the GetRequest
+            CloseableHttpResponse response = httpClient.execute(getLocationListRequest);
+
+            if(response != null && response.getStatusLine().getStatusCode() == HttpStatus.SC_OK){
+
+                //Obtain response body as a String
+                String bodyString = EntityUtils.toString(response.getEntity());
+
+                logger.info("Response Code: {}", response.getStatusLine().getStatusCode());
+                logger.info("Raw Response Body: {}", bodyString);
+
+                //Deserialize Json String and Log obtained locations
+                //Define Custom List Type
+                LocationDescriptor locationDescriptor = this.objectMapper.readValue(bodyString, LocationDescriptor.class);
+                logger.info("Location Descriptor for Id: {} -> {}", locationId, locationDescriptor);
+
+            }
+            else {
+                logger.error(String.format("Error executing the request ! Status Code: %d", response != null ? response.getStatusLine().getStatusCode() : -1));
+            }
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+    }
+
 
     public void getLocationList(){
 
@@ -140,6 +176,7 @@ public class GetLocationsProcess {
         GetLocationsProcess apiLocationProcess = new GetLocationsProcess(baseUrl);
         apiLocationProcess.getLocationList();
         apiLocationProcess.getLocationList("Mantova", "Italy");
+        apiLocationProcess.getLocation("000001");
     }
 
 }

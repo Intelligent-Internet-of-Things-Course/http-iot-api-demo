@@ -141,7 +141,7 @@ public class LocationResource {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     @ApiOperation(value="Update an existing device")
-    public Response updateDevice(@Context ContainerRequestContext req,
+    public Response updateLocation(@Context ContainerRequestContext req,
                                  @Context UriInfo uriInfo,
                                  @PathParam("location_id") String locationId,
                                  LocationUpdateRequest locationUpdateRequest) {
