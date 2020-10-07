@@ -18,3 +18,5 @@ The IoT Inventory resources currently modeled are:
 - Location (/location): Geographic location where one or multiple IoT devices can be deployed 
 - Device (/device): A generic representation of an IoT device with basic information and customizable attributes. 
 In the current implementation device's data are not handled and they are out of the scope of the demo inventory.
+- Users (/user): A user interacting with registered IoT devices and locations. Multiple roles can be managed and 
+lists of allowed locations and devices are associated to each user.
