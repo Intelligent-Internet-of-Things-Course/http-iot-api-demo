@@ -12,7 +12,6 @@ import it.unimore.dipi.iot.http.api.model.DeviceDescriptor;
 import it.unimore.dipi.iot.http.api.services.AppConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import javax.ws.rs.*;
 import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.core.Context;
@@ -122,7 +121,7 @@ public class DeviceResource {
             return Response.created(new URI(String.format("%s/%s",uriInfo.getAbsolutePath(),newDeviceDescriptor.getUuid()))).build();
 
         } catch (IoTInventoryDataManagerConflict e){
-            return Response.status(Response.Status.CONFLICT).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.CONFLICT.getStatusCode(),"Location with the same name already available !")).build();
+            return Response.status(Response.Status.CONFLICT).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.CONFLICT.getStatusCode(),"Device with the same UUID already available !")).build();
         } catch (Exception e){
             e.printStackTrace();
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.INTERNAL_SERVER_ERROR.getStatusCode(),"Internal Server Error !")).build();

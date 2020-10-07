@@ -4,11 +4,9 @@ import com.codahale.metrics.annotation.Timed;
 import io.dropwizard.jersey.errors.ErrorMessage;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import it.unimore.dipi.iot.http.api.dto.DeviceUpdateRequest;
 import it.unimore.dipi.iot.http.api.dto.LocationCreationRequest;
 import it.unimore.dipi.iot.http.api.dto.LocationUpdateRequest;
 import it.unimore.dipi.iot.http.api.exception.IoTInventoryDataManagerConflict;
-import it.unimore.dipi.iot.http.api.model.DeviceDescriptor;
 import it.unimore.dipi.iot.http.api.model.LocationDescriptor;
 import it.unimore.dipi.iot.http.api.services.AppConfig;
 import org.slf4j.Logger;
@@ -27,7 +25,6 @@ import java.util.Optional;
 @Api("IoT Location Inventory Endpoint")
 public class LocationResource {
 
-
     final protected Logger logger = LoggerFactory.getLogger(LocationResource.class);
 
     @SuppressWarnings("serial")
@@ -44,8 +41,8 @@ public class LocationResource {
     @Produces(MediaType.APPLICATION_JSON)
     @ApiOperation(value="Get all available locations or filter according to city AND country")
     public Response getLocations(@Context ContainerRequestContext req,
-                                                 @QueryParam("city") String city,
-                                                 @QueryParam("country") String country) {
+                                 @QueryParam("city") String city,
+                                 @QueryParam("country") String country) {
 
         try {
 
@@ -140,11 +137,11 @@ public class LocationResource {
     @Timed
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    @ApiOperation(value="Update an existing device")
+    @ApiOperation(value="Update an existing Location")
     public Response updateLocation(@Context ContainerRequestContext req,
-                                 @Context UriInfo uriInfo,
-                                 @PathParam("location_id") String locationId,
-                                 LocationUpdateRequest locationUpdateRequest) {
+                                   @Context UriInfo uriInfo,
+                                   @PathParam("location_id") String locationId,
+                                   LocationUpdateRequest locationUpdateRequest) {
 
         try {
 

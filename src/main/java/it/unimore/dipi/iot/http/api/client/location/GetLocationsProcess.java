@@ -1,4 +1,4 @@
-package it.unimore.dipi.iot.http.api.client;
+package it.unimore.dipi.iot.http.api.client.location;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
@@ -31,8 +31,7 @@ public class GetLocationsProcess {
     public GetLocationsProcess(String baseUrl){
         this.baseUrl = baseUrl;
         this.objectMapper = new ObjectMapper();
-        this.httpClient = HttpClients.custom()
-                .build();
+        this.httpClient = HttpClients.custom().build();
     }
 
     public void getLocation(String locationId){
@@ -73,7 +72,6 @@ public class GetLocationsProcess {
         }
 
     }
-
 
     public void getLocationList(){
 
@@ -122,9 +120,11 @@ public class GetLocationsProcess {
 
         try{
 
+            //http://127.0.0.1:7070/api/iot/inventory/location
             String targetUrl = String.format("%slocation", this.baseUrl);
 
             // URI Builder with Parameters
+            //Output -> http://127.0.0.1:7070/api/iot/inventory/location?city=<city>&country=<country>
             URIBuilder builder = new URIBuilder(targetUrl);
             builder.setParameter("city", city)
                     .setParameter("country", country);

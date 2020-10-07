@@ -1,20 +1,16 @@
-package it.unimore.dipi.iot.http.api.client;
+package it.unimore.dipi.iot.http.api.client.location;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.unimore.dipi.iot.http.api.model.LocationDescriptor;
+import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.util.Arrays;
-import java.util.Random;
 
 /**
  * @author Marco Picone, Ph.D. - picone.m@gmail.com
@@ -47,11 +43,11 @@ public class UpdateLocationProcess {
 
             String jsonBody = this.objectMapper.writeValueAsString(locationDescriptor);
 
-            //Create the HTTP GET Request
+            //Create the HTTP PUT Request
             HttpPut updateLocationRequest = new HttpPut(targetUrl);
 
             //Add Content Type Header
-            updateLocationRequest.addHeader("content-type", "application/json");
+            updateLocationRequest.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
 
             //Set Payload
             updateLocationRequest.setEntity(new StringEntity(jsonBody));

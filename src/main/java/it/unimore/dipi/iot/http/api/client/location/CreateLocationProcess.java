@@ -1,11 +1,11 @@
-package it.unimore.dipi.iot.http.api.client;
+package it.unimore.dipi.iot.http.api.client.location;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import it.unimore.dipi.iot.http.api.model.LocationDescriptor;
+import org.apache.http.HttpHeaders;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -45,11 +45,11 @@ public class CreateLocationProcess {
 
             String jsonBody = this.objectMapper.writeValueAsString(locationDescriptor);
 
-            //Create the HTTP GET Request
+            //Create the HTTP Post Request
             HttpPost createLocationRequest = new HttpPost(targetUrl);
 
             //Add Content Type Header
-            createLocationRequest.addHeader("content-type", "application/json");
+            createLocationRequest.addHeader(HttpHeaders.CONTENT_TYPE, "application/json");
 
             //Set Payload
             createLocationRequest.setEntity(new StringEntity(jsonBody));

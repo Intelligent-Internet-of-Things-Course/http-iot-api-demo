@@ -4,6 +4,7 @@ import it.unimore.dipi.iot.http.api.exception.IoTInventoryDataManagerConflict;
 import it.unimore.dipi.iot.http.api.exception.IoTInventoryDataManagerException;
 import it.unimore.dipi.iot.http.api.model.DeviceDescriptor;
 import it.unimore.dipi.iot.http.api.model.LocationDescriptor;
+import it.unimore.dipi.iot.http.api.model.UserDescriptor;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -19,10 +20,12 @@ public class DefaultIotInventoryDataManger implements IIoInventoryDataManager{
 
     private HashMap<String, LocationDescriptor> locationMap;
     private HashMap<String, DeviceDescriptor> deviceMap;
+    private HashMap<String, UserDescriptor> userMap;
 
     public DefaultIotInventoryDataManger(){
         this.locationMap = new HashMap<>();
         this.deviceMap = new HashMap<>();
+        this.userMap = new HashMap<>();
     }
 
     //LOCATION MANAGEMENT
@@ -133,5 +136,51 @@ public class DefaultIotInventoryDataManger implements IIoInventoryDataManager{
     @Override
     public DeviceDescriptor deleteDevice(String deviceId) throws IoTInventoryDataManagerException {
         return this.deviceMap.remove(deviceId);
+    }
+
+    //USER MANAGEMENT
+
+    @Override
+    public List<UserDescriptor> getUserList() throws IoTInventoryDataManagerException {
+        return new ArrayList<>(this.userMap.values());
+    }
+
+    @Override
+    public Optional<UserDescriptor> getUserById(String userId) throws IoTInventoryDataManagerException {
+        return Optional.ofNullable(this.userMap.get(userId));
+    }
+
+    @Override
+    public UserDescriptor createNewUser(UserDescriptor userDescriptor) throws IoTInventoryDataManagerException {
+
+        //Correct incoming values
+        if(userDescriptor != null &&
+                userDescriptor.getEmailAddress() != null &&
+                userDescriptor.getUsername() != null
+                && userDescriptor.getPassword() != null){
+
+            //Define UUID
+            if(userDescriptor.getInternalId() == null)
+                userDescriptor.setInternalId(UUID.randomUUID().toString());
+
+            //Add the new user to the UserMap
+            this.userMap.put(userDescriptor.getInternalId(), userDescriptor);
+
+            return userDescriptor;
+        }
+        else
+            throw new IoTInventoryDataManagerException("Wrong parameters");
+    }
+
+    @Override
+    public UserDescriptor updateUser(UserDescriptor userDescriptor) throws IoTInventoryDataManagerException {
+        //TODO Add incoming object validation
+        this.userMap.put(userDescriptor.getInternalId(), userDescriptor);
+        return userDescriptor;
+    }
+
+    @Override
+    public UserDescriptor deleteUser(String userId) throws IoTInventoryDataManagerException {
+        return this.userMap.remove(userId);
     }
 }

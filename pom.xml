@@ -39,6 +39,8 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Jackson -->
+
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -50,6 +52,8 @@
             <artifactId>jackson-dataformat-yaml</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+
+        <!-- ##################### -->
 
         <dependency>
             <groupId>javax.inject</groupId>
@@ -63,11 +67,21 @@
             <version>${slf4j.version}</version>
         </dependency>
 
+        <!-- Dropwizard Framework -->
+
         <dependency>
             <groupId>io.dropwizard</groupId>
             <artifactId>dropwizard-core</artifactId>
             <version>${dropwizard.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.smoketurner</groupId>
+            <artifactId>dropwizard-swagger</artifactId>
+            <version>${dropwizard-swagger.version}</version>
+        </dependency>
+
+        <!-- ##################### -->
 
         <dependency>
             <groupId>commons-codec</groupId>
@@ -103,12 +117,6 @@
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
             <version>${maven-compiler-plugin.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>com.smoketurner</groupId>
-            <artifactId>dropwizard-swagger</artifactId>
-            <version>${dropwizard-swagger.version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->

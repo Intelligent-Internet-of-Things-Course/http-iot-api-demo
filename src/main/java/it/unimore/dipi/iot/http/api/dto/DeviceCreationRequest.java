@@ -1,7 +1,6 @@
 package it.unimore.dipi.iot.http.api.dto;
 
 import it.unimore.dipi.iot.http.api.model.DeviceDescriptor;
-import it.unimore.dipi.iot.http.api.model.LocationDescriptor;
 
 /**
  * @author Marco Picone, Ph.D. - picone.m@gmail.com

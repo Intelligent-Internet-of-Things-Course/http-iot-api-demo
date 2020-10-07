@@ -4,6 +4,7 @@ import it.unimore.dipi.iot.http.api.exception.IoTInventoryDataManagerConflict;
 import it.unimore.dipi.iot.http.api.exception.IoTInventoryDataManagerException;
 import it.unimore.dipi.iot.http.api.model.DeviceDescriptor;
 import it.unimore.dipi.iot.http.api.model.LocationDescriptor;
+import it.unimore.dipi.iot.http.api.model.UserDescriptor;
 
 import java.util.List;
 import java.util.Optional;
@@ -46,5 +47,18 @@ public interface IIoInventoryDataManager {
     public DeviceDescriptor updateDevice(DeviceDescriptor deviceDescriptor) throws IoTInventoryDataManagerException;
 
     public DeviceDescriptor deleteDevice(String deviceId) throws IoTInventoryDataManagerException;
+
+    //User Management
+    public List<UserDescriptor> getUserList() throws IoTInventoryDataManagerException;
+
+    public Optional<UserDescriptor> getUserById(String userId) throws IoTInventoryDataManagerException;
+
+    //public Optional<UserDescriptor> getUserByEmail() throws IoTInventoryDataManagerException;
+
+    public UserDescriptor createNewUser(UserDescriptor userDescriptor) throws IoTInventoryDataManagerException;
+
+    public UserDescriptor updateUser(UserDescriptor userDescriptor) throws IoTInventoryDataManagerException;
+
+    public UserDescriptor deleteUser(String userId) throws IoTInventoryDataManagerException;
 
 }

@@ -7,6 +7,7 @@ import io.federecio.dropwizard.swagger.SwaggerBundle;
 import io.federecio.dropwizard.swagger.SwaggerBundleConfiguration;
 import it.unimore.dipi.iot.http.api.resources.DeviceResource;
 import it.unimore.dipi.iot.http.api.resources.LocationResource;
+import it.unimore.dipi.iot.http.api.resources.UserResource;
 import it.unimore.dipi.iot.http.api.utils.DummyDataGenerator;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 
@@ -23,12 +24,15 @@ public class AppService extends Application<AppConfig> {
 
     public void run(AppConfig appConfig, Environment environment) throws Exception {
 
-        //Create Demo Locations
+        //Create Demo Locations, Device and Users
         DummyDataGenerator.generateDummyLocations(appConfig.getInventoryDataManager());
         DummyDataGenerator.generateDummyDevices(appConfig.getInventoryDataManager());
+        DummyDataGenerator.generateDummyUsers(appConfig.getInventoryDataManager());
 
+        //Add our defined resources
         environment.jersey().register(new LocationResource(appConfig));
         environment.jersey().register(new DeviceResource(appConfig));
+        environment.jersey().register(new UserResource(appConfig));
 
         // Enable CORS headers
         final FilterRegistration.Dynamic cors = environment.servlets().addFilter("CORS", CrossOriginFilter.class);

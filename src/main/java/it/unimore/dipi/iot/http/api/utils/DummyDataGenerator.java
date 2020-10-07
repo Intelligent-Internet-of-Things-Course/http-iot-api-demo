@@ -1,10 +1,14 @@
 package it.unimore.dipi.iot.http.api.utils;
 
+import it.unimore.dipi.iot.http.api.exception.IoTInventoryDataManagerException;
 import it.unimore.dipi.iot.http.api.model.DeviceDescriptor;
 import it.unimore.dipi.iot.http.api.model.LocationDescriptor;
+import it.unimore.dipi.iot.http.api.model.UserDescriptor;
 import it.unimore.dipi.iot.http.api.persistence.IIoInventoryDataManager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.UUID;
 
 /**
  * @author Marco Picone, Ph.D. - picone.m@gmail.com
@@ -66,6 +70,25 @@ public class DummyDataGenerator {
         }catch (Exception e){
             e.printStackTrace();
         }
+    }
+
+    public static void generateDummyUsers(IIoInventoryDataManager inventoryDataManager) throws IoTInventoryDataManagerException {
+
+        UserDescriptor userDescriptor = new UserDescriptor();
+        userDescriptor.setInternalId("user00001");
+        userDescriptor.setUsername("testUser00001");
+        userDescriptor.setPassword(UUID.randomUUID().toString());
+        userDescriptor.setEmailAddress("iotuser@test.com");
+        userDescriptor.setRole("ADMIN");
+        userDescriptor.setAllowedDeviceIdList(null);
+        userDescriptor.setAllowedLocationIdList(new ArrayList<String>(){
+            {
+                add("000001");
+            }
+        });
+
+        inventoryDataManager.createNewUser(userDescriptor);
+
     }
 
 }
