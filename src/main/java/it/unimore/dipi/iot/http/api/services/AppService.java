@@ -49,14 +49,11 @@ public class AppService extends Application<AppConfig> {
 
     @Override
     public void initialize(Bootstrap<AppConfig> bootstrap) {
-
-
         bootstrap.addBundle(new SwaggerBundle<AppConfig>() {
             @Override
             protected SwaggerBundleConfiguration getSwaggerBundleConfiguration(AppConfig configuration) {
                 return configuration.swaggerBundleConfiguration;
             }
         });
-
     }
 }
