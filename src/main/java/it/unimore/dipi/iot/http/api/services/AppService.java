@@ -18,7 +18,6 @@ import java.util.EnumSet;
 public class AppService extends Application<AppConfig> {
 
     public static void main(String[] args) throws Exception{
-
         new AppService().run(new String[]{"server", args.length > 0 ? args[0] : "configuration.yml"});
     }
 

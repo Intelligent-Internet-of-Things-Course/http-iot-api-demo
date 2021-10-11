@@ -1,0 +1,79 @@
+Basic API Endpoint: api/iot/inventory
+
+es: http://127.0.0.1:7070/api/iot/inventory/device
+
+Device Data Structure -> 
+
+{
+    "uuid": "device00001”,
+    "name": "Demo Temperature Sensor 2",
+    "locationId": "000001",
+    "type": "dev:dummy:temperature",
+    "attributes": {
+        "min_value": -200,
+        "unit": "C",
+        "software_version": "0.0.1",
+        "battery": false,
+        "manufacturer": "ACME Corporation",
+        "max_value": 200
+    }
+}
+
+
+Resource - IoT Device List -> Resource Id: device (api/iot/inventory/device)
+
+- (READ) GET -> Provide the list of all devices
+	- Request Body: EMPTY
+	- Response:
+		- Header: Content-Type -> “application/json”
+		- Code: 200 (OK)
+		- Body: [{…}, {…}, {Device Data Structure}]
+	- Additional Responses
+		- 400 Bad Request
+		- 404 Not Found
+		- 500 Internal Server Error
+		
+- (CREATE) POST -> Create a new Device 
+	- Request Body: 
+		- {Device Data Structure - uuid: device00001}
+	- Response Body:
+		- Code: 201 (CREATED)
+		- Header: Location -> http://127.0.0.1:7070/api/iot/inventory/device/device00001
+		- Body: EMPTY
+	- Additional Responses
+		- 400 Bad Request
+		- 404 Not Found
+		- 409 Conflict
+		- 500 Internal Server Error
+
+Resource - IoT Device -> Resource Id: device (api/iot/inventory/device/<uuid>)
+
+- (READ) GET -> Return the target resource (using the uuid)
+	- Request Body: EMPTY
+	- Response:
+		- Code: 200 (OK)
+		- Body: {Device Data Structure}
+	- Additional Responses
+		- 400 Bad Request
+		- 404 Not Found
+		- 500 Internal Server Error
+- (UPDATE) PUT -> Update the target resource (using the uuid)
+	- Request Body: 
+		- {Device Data Structure - uuid: device00001}
+	- Response Body:
+		- Code: 204 (No Content)
+		- Body: EMPTY
+	- Additional Responses
+		- 400 Bad Request
+		- 404 Not Found
+		- 500 Internal Server Error
+- (REMOVE) DELETE -> Remove the target resource (using the uuid)
+	- Request Body: EMPTY
+	- Response:
+		- Code: 200 (OK), 204 (No Content), 202 (Accepted)
+		- Body: EMPTY
+	- Additional Responses
+		- 400 Bad Request
+		- 404 Not Found
+		- 500 Internal Server Error
+

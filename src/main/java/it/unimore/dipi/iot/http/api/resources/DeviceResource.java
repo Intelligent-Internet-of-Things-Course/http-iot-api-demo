@@ -58,7 +58,10 @@ public class DeviceResource {
                 deviceList = this.conf.getInventoryDataManager().getDeviceListByFilter(deviceType, locationId);
 
             if(deviceList == null)
-                return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),"Devices Not Found !")).build();
+                return Response.status(Response.Status.NOT_FOUND)
+                        .type(MediaType.APPLICATION_JSON_TYPE)
+                        .entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),"Devices Not Found !"))
+                        .build();
 
             return Response.ok(deviceList).build();
 
