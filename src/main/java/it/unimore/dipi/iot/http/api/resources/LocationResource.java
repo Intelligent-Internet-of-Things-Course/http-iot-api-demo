@@ -48,20 +48,20 @@ public class LocationResource {
 
             logger.info("Loading all stored IoT Inventory Location filtered by City: {} and Country: {}", city, country);
 
-            List<LocationDescriptor> serviceList = null;
+            List<LocationDescriptor> locationList = null;
 
             //No filter applied
             if(city == null && country == null)
-                serviceList = this.conf.getInventoryDataManager().getLocationList();
+                locationList = this.conf.getInventoryDataManager().getLocationList();
             else if(city != null && country != null)
-                serviceList = this.conf.getInventoryDataManager().getLocationListByCity(city, country);
+                locationList = this.conf.getInventoryDataManager().getLocationListByCity(city, country);
             else
                 return Response.status(Response.Status.BAD_REQUEST).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.BAD_REQUEST.getStatusCode(),"City and Country are both required for filtering !")).build();
 
-            if(serviceList == null)
+            if(locationList == null)
                 return Response.status(Response.Status.NOT_FOUND).type(MediaType.APPLICATION_JSON_TYPE).entity(new ErrorMessage(Response.Status.NOT_FOUND.getStatusCode(),"Locations Not Found !")).build();
 
-            return Response.ok(serviceList).build();
+            return Response.ok(locationList).build();
 
         } catch (Exception e){
             e.printStackTrace();
